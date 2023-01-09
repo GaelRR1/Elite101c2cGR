@@ -42,7 +42,7 @@ class add_account(aaccount):
   def __init__(self):
     self.owner = input("What is the owner? ")
     self.date = str(date)
-    self.funds = input("What are the funds of the account?  ")
+    self.funds = int(input("What are the funds of the account?  "))
     self.code = str(random.randint(000,999))
 
 #introduction for give context to user
@@ -65,7 +65,7 @@ g = 0
 while g == 0:
   answer = input("We can <show> the present accounts and their information ,<transfer> funds ,and <create> an account.For understanding us better can you use the words between < >. \nIf you want to end our chat write end.")
   if revis(scenario_sh) and revis(scenario_tr) and revis(scenario_cr):
-    print("I don't understand can you specify 1 thing. ")
+    print("\nI don't understand can you specify 1 thing.\n ")
   elif revis(scenario_sh):
     for a in acc_ls:
       a.show_account()
@@ -74,15 +74,20 @@ while g == 0:
     codetk = input("\nWrite the code were taking funds. ")
     codegv = input("\nWrite the code to give funds. ")
     amount_to = int(input("\nWhat is amount to transfer."))
-    if(codetk == '673'):
-      a1.transfer(True,amount_to)
-    if(codetk == '893'):
-      a2.transfer(True,amount_to)
-    if(codegv == '673'):
-      a1.transfer(False,amount_to)
-    if(codegv == '893'):
-      a2.transfer(False,amount_to)
-    print("""
+    tk_check = 0
+    gv_check = 0
+    for a in acc_ls:
+      if a.code == codetk:
+       a.transfer(True,amount_to)
+       tk_check +=1
+      elif a.code == codegv:
+       a.transfer(False,amount_to)
+       gv_check += 1
+    if tk_check == 0:
+      print("\nTake account not founded")
+    if gv_check == 0:
+      print("\n give account not founded")
+      print("""
     This is the new values""")
     for a in acc_ls:
       a.show_account()
@@ -93,7 +98,7 @@ while g == 0:
     a = add_account()
     acc_ls.append(a)
   else:
-    print("Maybe what you want is off limits, or please rephrase it.")
+    print("\nMaybe what you want is off limits, or please rephrase it.\n")
   if 'end' in answer:
     g +=1
     break
